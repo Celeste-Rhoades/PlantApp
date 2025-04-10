@@ -2,58 +2,80 @@ import { useContext, useState } from "react";
 import SessionContext from "contexts/sessionContext";
 import { Link } from "react-router-dom";
 import CartModal from "./models/CartModel";
+import ModalWrapper from "./models/CartModel/ModalWraaper";
+import MobileMenuModal from "./models/CartModel/MobilMenuModal";
 
 const NavBar = () => {
   const { username, signOut } = useContext(SessionContext);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
     <>
       <nav
-        className="bg-emerald-800 flex justify-center font-lato"
+        className="flex justify-center bg-emerald-800 font-lato"
         onMouseLeave={() => setUserMenuOpen(false)}
       >
-        <div className="w-full max-w-5xl flex items-center justify-between px-8 py-2">
+        <div className="flex w-full max-w-5xl items-center justify-between px-8 py-2">
           <Link to="/plants">
-            <div className="font-playfair text-white flex flex-col text-xl items-center">
+            <div className="flex flex-col items-center font-playfair text-xl text-white">
               <img
                 src="https://static-task-assets.react-formula.com/capstone_logo_light.png"
-                className="w-10 "
+                className="w-10"
               />
               Rica's Plants
             </div>
           </Link>
-          <div className=" flex-1 flex justify-end">
+          <div className="hidden flex-1 justify-end sm:flex">
             <div className="relative min-w-32">
               <button
-                className="text-emerald-200 flex items-center"
+                className="flex items-center text-emerald-200"
                 onClick={() => setUserMenuOpen(true)}
               >
                 <i className="fa-solid fa-user mr-2 text-xl"></i>
                 {username}
               </button>
               {userMenuOpen && (
-                <div className="absolute bottom-[-46px] px-4 py-2 left-0 bg-white rounded-md shadow-md ">
+                <div className="absolute bottom-[-46px] left-0 rounded-md bg-white px-4 py-2 shadow-md">
                   <button
                     className="text-slate-500 hover:text-emerald-700"
                     onClick={signOut}
                   >
-                    <i className="mr-2 fa-solid fa-arrow-right-from-bracket"></i>
+                    <i className="fa-solid fa-arrow-right-from-bracket mr-2"></i>
                     Sign Out
                   </button>
                 </div>
               )}
             </div>
             <button
-              className="text-emerald-200 flex items-center"
+              className="flex items-center text-emerald-200"
               onClick={() => setCartOpen(true)}
             >
               <i className="fa-solid fa-cart-shopping mr-2 text-xl"></i>cart
             </button>
           </div>
+          <button
+            className="flex sm:hidden"
+            onClick={() => setMobileMenuOpen(true)}
+          >
+            <i className="fa-solid fa-bars text-4xl text-emerald-400"></i>
+          </button>
         </div>
       </nav>
-      {cartOpen && <CartModal setCartOpen={setCartOpen} />}
+      <ModalWrapper isOpen={cartOpen} onCloseClick={() => setCartOpen(false)}>
+        <CartModal setCartOpen={setCartOpen} />
+      </ModalWrapper>
+      <ModalWrapper
+        isOpen={mobileMenuOpen}
+        onCloseClick={() => setMobileMenuOpen(false)}
+      >
+        <MobileMenuModal
+          onCartOpenClick={() => {
+            setCartOpen(true);
+            setMobileMenuOpen(false);
+          }}
+        />
+      </ModalWrapper>
     </>
   );
 };

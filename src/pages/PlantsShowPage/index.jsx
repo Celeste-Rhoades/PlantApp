@@ -22,7 +22,7 @@ const PlantsShowPage = () => {
   return (
     <>
       <NavBar />
-      <div className="flex justify-center bg-green-50 min-h-screen font-lato">
+      <div className="flex min-h-screen justify-center bg-green-50 font-lato">
         <div className="w-full max-w-5xl px-8 py-24">
           {isLoading ? <LoadingSpinner /> : <PlantInfoSection plant={plant} />}
         </div>
