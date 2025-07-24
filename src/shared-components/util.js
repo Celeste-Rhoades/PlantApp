@@ -7,6 +7,6 @@ export const POT_COLORS = {
   amber: "bg-amber-600",
 };
 
-export const getRandomIdx = array => {
+export const getRandomIdx = (array) => {
   return Math.floor(Math.random() * array.length);
 };
